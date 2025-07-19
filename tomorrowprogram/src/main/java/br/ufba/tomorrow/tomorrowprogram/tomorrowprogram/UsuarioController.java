@@ -1,5 +1,6 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,7 @@ public class UsuarioController {
 //
 // JACKSON (Serialização JSON automática)
     @GetMapping()
+    @Operation(summary = "Lista todos os usuários")
     public List<Usuario> getAllUsuarios(){
         return usuarios;
     }
@@ -54,8 +56,38 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario){
+        String nome = usuario.getNome();
+        String email = usuario.getEmail();
+
+        if(nome == null || email == null)
+            return ResponseEntity.status(400).body("Existem campos nulos");
+
         usuarios.add(new Usuario(usuario.getNome(), usuario.getEmail()));
 
         return ResponseEntity.status(201).build();
     }
+
+    @PutMapping("/{indice}")
+    public ResponseEntity<?> updateUsuario(@PathVariable Integer indice, @RequestBody Usuario usuarioModificado){
+        try {
+
+            Usuario usuario = usuarios.get(indice);
+
+            String nome = usuarioModificado.getNome();
+            String email = usuarioModificado.getEmail();
+
+            if(nome == null || email == null)
+                return ResponseEntity.status(400).body("Existem campos nulos");
+
+            usuario.setNome(usuarioModificado.getNome());
+            usuario.setEmail(usuario.getEmail());
+
+            return ResponseEntity.status(200).body(usuario);
+        } catch (IndexOutOfBoundsException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Usuário não encontrado no índice informado.");
+        }
+    }
+
 }
