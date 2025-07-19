@@ -90,4 +90,18 @@ public class UsuarioController {
         }
     }
 
+    @DeleteMapping("/{indice}")
+    public ResponseEntity removeUsuario(@PathVariable int indice){
+
+        try {
+            Usuario usuario = usuarios.get(indice);
+            usuarios.remove(indice);
+            return ResponseEntity.status(204).build();
+        } catch (IndexOutOfBoundsException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Usuário não encontrado no índice informado.");
+        }
+    }
+
 }
