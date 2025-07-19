@@ -1,14 +1,15 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios/")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     private List<Usuario> usuarios = new ArrayList<>(List.of(
@@ -36,5 +37,25 @@ public class UsuarioController {
     @GetMapping()
     public List<Usuario> getAllUsuarios(){
         return usuarios;
+    }
+
+    @GetMapping("/{indice}")
+    public ResponseEntity<?> getUsuario(@PathVariable int indice){
+
+        try {
+            Usuario usuario = usuarios.get(indice);
+            return ResponseEntity.ok(usuario);
+        } catch (IndexOutOfBoundsException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Usuário não encontrado no índice informado.");
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario){
+        usuarios.add(new Usuario(usuario.getNome(), usuario.getEmail()));
+
+        return ResponseEntity.status(201).build();
     }
 }
