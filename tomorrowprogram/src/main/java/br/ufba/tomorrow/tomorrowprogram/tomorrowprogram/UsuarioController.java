@@ -1,6 +1,7 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
-    private List<Usuario> usuarios = new ArrayList<>(List.of(
-            new Usuario("caua","Caua@gmail.com"),
-            new Usuario("Pam","Pam@gmail.com"),
-            new Usuario("brian","brian@gmail.com")
-    ));
+
+    private final UsuarioService usuarioService;
 
 
     // O Spring Boot utiliza a biblioteca Jackson para serializar automaticamente os objetos Java em JSON.
@@ -37,71 +36,46 @@ public class UsuarioController {
 // JACKSON (Serialização JSON automática)
     @GetMapping()
     @Operation(summary = "Lista todos os usuários")
-    public List<Usuario> getAllUsuarios(){
-        return usuarios;
+    public List<Usuario> getAllUsuarios() {
+        return usuarioService.findAll();
     }
 
     @GetMapping("/{indice}")
-    public ResponseEntity<?> getUsuario(@PathVariable int indice){
+    public ResponseEntity<?> getUsuario(@PathVariable int indice) {
 
-        try {
-            Usuario usuario = usuarios.get(indice);
-            return ResponseEntity.ok(usuario);
-        } catch (IndexOutOfBoundsException e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Usuário não encontrado no índice informado.");
-        }
+        Usuario usuario = usuarioService.findById(indice);
+
+        if(usuario == null)
+            return ResponseEntity.status(404).body("Usuário Não encontrado");
+
+        return ResponseEntity.ok().body(usuario);
     }
 
     @PostMapping
-    public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario){
-        String nome = usuario.getNome();
-        String email = usuario.getEmail();
-
-        if(nome == null || email == null)
-            return ResponseEntity.status(400).body("Existem campos nulos");
-
-        usuarios.add(new Usuario(usuario.getNome(), usuario.getEmail()));
-
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario) {
+       if(!usuarioService.saveUsuario(usuario))
+           return ResponseEntity.status(400).body("Não foi possivel criar");
+       return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{indice}")
-    public ResponseEntity<?> updateUsuario(@PathVariable Integer indice, @RequestBody Usuario usuarioModificado){
-        try {
+    public ResponseEntity<?> updateUsuario(@PathVariable Integer indice, @RequestBody Usuario usuarioModificado) {
 
-            Usuario usuario = usuarios.get(indice);
+        Usuario usuario = usuarioService.updateUsuario(indice, usuarioModificado);
 
-            String nome = usuarioModificado.getNome();
-            String email = usuarioModificado.getEmail();
+        if(usuario == null)
+            return ResponseEntity.status(404).body("Usuário Não encontrado");
 
-            if(nome == null || email == null)
-                return ResponseEntity.status(400).body("Existem campos nulos");
-
-            usuario.setNome(usuarioModificado.getNome());
-            usuario.setEmail(usuario.getEmail());
-
-            return ResponseEntity.status(200).body(usuario);
-        } catch (IndexOutOfBoundsException e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Usuário não encontrado no índice informado.");
-        }
+        return ResponseEntity.ok().body(usuario);
     }
 
     @DeleteMapping("/{indice}")
-    public ResponseEntity removeUsuario(@PathVariable int indice){
+    public ResponseEntity removeUsuario(@PathVariable int indice) {
 
-        try {
-            Usuario usuario = usuarios.get(indice);
-            usuarios.remove(indice);
-            return ResponseEntity.status(204).build();
-        } catch (IndexOutOfBoundsException e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Usuário não encontrado no índice informado.");
+        if(!usuarioService.removeById(indice)){
+            return ResponseEntity.status(404).body("Usuário Não encontrado");
         }
-    }
 
+        return ResponseEntity.status(204).build();
+    }
 }
