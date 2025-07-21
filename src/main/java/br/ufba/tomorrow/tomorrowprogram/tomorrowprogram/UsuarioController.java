@@ -2,6 +2,7 @@ package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
-@RequiredArgsConstructor
 public class UsuarioController {
 
-
-    private final UsuarioService usuarioService;
-
+    @Autowired
+    private  UsuarioService usuarioService;
 
     // O Spring Boot utiliza a biblioteca Jackson para serializar automaticamente os objetos Java em JSON.
 // Neste caso, ao retornar uma lista de objetos Usuario, o Jackson converte cada instância da classe Usuario

@@ -20,7 +20,7 @@ public class UsuarioService {
         if(!existeUsuario(id))
             return null;
 
-        return  usuarios.get(0);
+        return  usuarios.get(id);
     }
 
     public Boolean removeById(Integer id){
@@ -43,7 +43,7 @@ public class UsuarioService {
         String email = usuarioModificado.getEmail();
 
         usuario.setNome(usuarioModificado.getNome());
-        usuario.setEmail(usuario.getEmail());
+        usuario.setEmail(usuarioModificado.getEmail());
 
         return usuario;
     }
@@ -59,6 +59,6 @@ public class UsuarioService {
     }
 
     private boolean existeUsuario(Integer indice) {
-        return indice != null && indice < usuarios.toArray().length;
+        return indice != null && indice >= 0 && indice < usuarios.size();
     }
 }
