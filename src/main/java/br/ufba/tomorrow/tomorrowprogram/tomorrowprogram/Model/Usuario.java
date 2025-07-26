@@ -1,6 +1,8 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,9 +18,12 @@ public class Usuario {
     private Long id;
 
     @Column(name = "nome")
+    @NotNull
     private String nome;
 
     @Column(name = "email")
+    @NotNull
+    @Email
     private String email;
 
     // ✅ Construtor personalizado sem o id

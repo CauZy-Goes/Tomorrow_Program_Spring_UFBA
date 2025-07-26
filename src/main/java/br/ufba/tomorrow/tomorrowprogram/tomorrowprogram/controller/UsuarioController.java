@@ -4,6 +4,8 @@ import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.exception.NotFou
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model.Usuario;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{indice}")
-    public ResponseEntity<?> getUsuario(@PathVariable int indice) {
+    public ResponseEntity<?> getUsuario(@PathVariable @NotNull int indice) {
 
         Optional<Usuario> usuario = usuarioService.findById(indice);
 
@@ -54,11 +56,12 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario) {
-       if(!usuarioService.saveUsuario(usuario)){
-//           throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Campos estão vazios",);
-           return ResponseEntity.status(400).body("Não foi possivel criar");
-       }
+    public ResponseEntity<?> createUsuario(@RequestBody @Valid Usuario usuario) {
+//       if(!usuarioService.saveUsuario(usuario)){
+////           throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Campos estão vazios",);
+//           return ResponseEntity.status(400).body("Não foi possivel criar");
+//       }
+       usuarioService.saveUsuario(usuario);
        return ResponseEntity.ok().build();
     }
 
@@ -75,7 +78,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{indice}")
-    public ResponseEntity removeUsuario(@PathVariable int indice) {
+    public ResponseEntity removeUsuario(@PathVariable @NotNull int indice) {
 
         if(!usuarioService.removeById(indice)){
             throw new NotFoundException("Id não encontrado");

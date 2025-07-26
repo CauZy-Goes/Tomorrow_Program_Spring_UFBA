@@ -55,14 +55,8 @@ public class UsuarioService {
         return Collections.unmodifiableList(usuarios);
     }
 
-    public boolean saveUsuario(Usuario usuario){
-
-        if (usuario.getEmail() == null || usuario.getNome() == null){
-            return false;
-        }
-
+    public void saveUsuario(Usuario usuario){
         usuarios.add(usuario);
-        return true;
     }
 
     private boolean existeUsuario(Integer indice) {
