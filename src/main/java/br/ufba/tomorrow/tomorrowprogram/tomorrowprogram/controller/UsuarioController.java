@@ -62,13 +62,9 @@ public class UsuarioController {
     }
 
     @PutMapping("/{indice}")
-    public ResponseEntity<?> updateUsuario(@PathVariable Integer indice, @RequestBody Usuario usuarioModificado) {
+    public ResponseEntity<?> updateUsuario(@PathVariable Long indice, @RequestBody Usuario usuarioModificado) {
 
         Usuario usuario = usuarioService.updateUsuario(indice, usuarioModificado);
-
-        if(usuario == null)
-            throw new NotFoundException("Id não encontrado");
-//            return ResponseEntity.status(404).body("Usuário Não encontrado");
 
         return ResponseEntity.ok().body(usuario);
     }
@@ -79,4 +75,10 @@ public class UsuarioController {
         usuarioService.removeById(indice);
         return ResponseEntity.status(204).build();
     }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Usuario> findByEmail(@PathVariable String email){
+        return ResponseEntity.ok(usuarioService.findByEmail(email));
+    }
+
 }

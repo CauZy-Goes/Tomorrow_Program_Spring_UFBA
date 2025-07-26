@@ -28,19 +28,14 @@ public class UsuarioService {
         usuarioRepository.delete(findById(id));
     }
 
-    public Usuario updateUsuario(Integer id, Usuario usuarioModificado){
-        if (!existeUsuario(id))
-            return null;
+    public Usuario updateUsuario(Long id, Usuario usuarioModificado){
 
-        Usuario usuario = usuarios.get(id);
+        if(!usuarioRepository.existsById(id))
+            throw new NotFoundException("Usuário não encontrado");
 
-        String nome = usuarioModificado.getNome();
-        String email = usuarioModificado.getEmail();
+        usuarioModificado.setId(id);
 
-        usuario.setNome(usuarioModificado.getNome());
-        usuario.setEmail(usuarioModificado.getEmail());
-
-        return usuario;
+        return usuarioRepository.save(usuarioModificado);
     }
 
 //    🧠 Por que usar Collections.unmodifiableList()?
@@ -58,5 +53,9 @@ public class UsuarioService {
 
     private boolean existeUsuario(Integer indice) {
         return indice != null && indice >= 0 && indice < usuarios.size();
+    }
+
+    public Usuario findByEmail(String email){
+        return usuarioRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Email não encontrado"));
     }
 }
