@@ -4,3 +4,15 @@ git config --global user.email "cauafariasdev@gmail.com"
 git config --global --list
 
 git config --global credential.helper store
+
+git credential-cache exit
+
+git config --global credential.helper
+
+git config --global --unset credential.helper
+
+git config --global --unset user.name
+git config --global --unset user.email
+
+
+git config --global --list
