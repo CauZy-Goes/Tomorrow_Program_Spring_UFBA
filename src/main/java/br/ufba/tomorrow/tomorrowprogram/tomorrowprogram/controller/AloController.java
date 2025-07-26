@@ -1,4 +1,4 @@
-package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram;
+package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.controller;
 
 import org.springframework.web.bind.annotation.*;
 

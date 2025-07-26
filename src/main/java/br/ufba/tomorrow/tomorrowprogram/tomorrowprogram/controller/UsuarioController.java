@@ -1,18 +1,14 @@
-package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram;
+package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.controller;
 
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.exception.NotFoundException;
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model.Usuario;
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

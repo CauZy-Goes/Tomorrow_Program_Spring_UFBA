@@ -1,7 +1,6 @@
-package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram;
+package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model.Usuario;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

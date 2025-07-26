@@ -1,8 +1,7 @@
-package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram;
+package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
