@@ -1,12 +1,17 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service;
 
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model.Usuario;
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
+
+    private final UsuarioRepository usuarioRepository;
 
     private List<Usuario> usuarios = new ArrayList<>(List.of(
             new Usuario("caua", "Caua@gmail.com"),
@@ -52,11 +57,11 @@ public class UsuarioService {
 //    usuarioService.findAll().clear(); // Isso apagaria todos os usuários!
 //    Mas ao usar unmodifiableList(), isso geraria uma exceção UnsupportedOperationException, impedindo alterações externas.
     public List<Usuario> findAll(){
-        return Collections.unmodifiableList(usuarios);
+        return Collections.unmodifiableList(usuarioRepository.findAll());
     }
 
     public void saveUsuario(Usuario usuario){
-        usuarios.add(usuario);
+        usuarioRepository.save(usuario);
     }
 
     private boolean existeUsuario(Integer indice) {
