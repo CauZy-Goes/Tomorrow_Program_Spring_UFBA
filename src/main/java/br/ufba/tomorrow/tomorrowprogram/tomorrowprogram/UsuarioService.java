@@ -57,6 +57,11 @@ public class UsuarioService {
     }
 
     public boolean saveUsuario(Usuario usuario){
+
+        if (usuario.getEmail() == null || usuario.getNome() == null){
+            return false;
+        }
+
         usuarios.add(usuario);
         return true;
     }

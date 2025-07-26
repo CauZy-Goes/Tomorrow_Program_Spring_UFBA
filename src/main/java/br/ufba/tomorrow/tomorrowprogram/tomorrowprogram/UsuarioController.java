@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,15 +50,19 @@ public class UsuarioController {
         Optional<Usuario> usuario = usuarioService.findById(indice);
 
         if(usuario == null)
-            return ResponseEntity.status(404).body("Usuário Não encontrado");
+            throw new NotFoundException("Id não encontrado");
+//            return ResponseEntity.status(404).body("Usuário Não encontrado");
 
         return ResponseEntity.of(usuario);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario) {
-       if(!usuarioService.saveUsuario(usuario))
+       if(!usuarioService.saveUsuario(usuario)){
+//           throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Campos estão vazios",);
            return ResponseEntity.status(400).body("Não foi possivel criar");
+       }
        return ResponseEntity.ok().build();
     }
 
@@ -67,7 +72,8 @@ public class UsuarioController {
         Usuario usuario = usuarioService.updateUsuario(indice, usuarioModificado);
 
         if(usuario == null)
-            return ResponseEntity.status(404).body("Usuário Não encontrado");
+            throw new NotFoundException("Id não encontrado");
+//            return ResponseEntity.status(404).body("Usuário Não encontrado");
 
         return ResponseEntity.ok().body(usuario);
     }
@@ -76,26 +82,12 @@ public class UsuarioController {
     public ResponseEntity removeUsuario(@PathVariable int indice) {
 
         if(!usuarioService.removeById(indice)){
-            return ResponseEntity.status(404).body("Usuário Não encontrado");
+            throw new NotFoundException("Id não encontrado");
+
+//            return ResponseEntity.status(404).body("Usuário Não encontrado");
         }
 
         return ResponseEntity.status(204).build();
 
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<Erro> trataErroDeTipoDeArgumento(MethodArgumentTypeMismatchException e){
-
-        Erro erro = new Erro("Tipo Inválido", 400, e.getMessage());
-
-        return ResponseEntity.badRequest().body(erro);
-    }
-
-    @Data
-    @AllArgsConstructor
-    public class Erro{
-        String mensagemDeErro;
-        Integer status;
-        String mensagemOriginal;
     }
 }
