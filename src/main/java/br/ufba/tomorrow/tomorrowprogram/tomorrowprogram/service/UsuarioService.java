@@ -14,12 +14,6 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    private List<Usuario> usuarios = new ArrayList<>(List.of(
-            new Usuario("caua", "Caua@gmail.com"),
-            new Usuario("Pam", "Pam@gmail.com"),
-            new Usuario("brian", "brian@gmail.com")
-    ));
-
     public Usuario findById(Long id){
         return usuarioRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
@@ -49,10 +43,6 @@ public class UsuarioService {
 
     public void saveUsuario(Usuario usuario){
         usuarioRepository.save(usuario);
-    }
-
-    private boolean existeUsuario(Integer indice) {
-        return indice != null && indice >= 0 && indice < usuarios.size();
     }
 
     public Usuario findByEmail(String email){

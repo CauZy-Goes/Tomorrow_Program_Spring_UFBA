@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor              // Necessário para o JPA
@@ -18,13 +21,13 @@ public class Usuario {
     private Long id;
 
     @Column(name = "nome")
-    @NotNull
     private String nome;
 
     @Column(name = "email", unique = true)
-    @NotNull
-    @Email
     private String email;
+
+    @OneToMany(mappedBy = "id")
+    List<Postagem> postagens;
 
     // ✅ Construtor personalizado sem o id
     public Usuario(String nome, String email) {

@@ -1,5 +1,6 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.controller;
 
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model.UsuarioMapper;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model.dto.UsuarioRequestDTO;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.exception.NotFoundException;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model.Usuario;
@@ -21,6 +22,8 @@ import java.util.Optional;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+
+    private final UsuarioMapper usuarioMapper;
 
     // O Spring Boot utiliza a biblioteca Jackson para serializar automaticamente os objetos Java em JSON.
 // Neste caso, ao retornar uma lista de objetos Usuario, o Jackson converte cada instância da classe Usuario
@@ -59,7 +62,7 @@ public class UsuarioController {
 //           return ResponseEntity.status(400).body("Não foi possivel criar");
 //       }
 
-        Usuario usuario = new Usuario(usuarioDTO.nome(), usuarioDTO.email());
+        Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
 
 
         usuarioService.saveUsuario(usuario);
@@ -67,9 +70,9 @@ public class UsuarioController {
     }
 
     @PutMapping("/{indice}")
-    public ResponseEntity<?> updateUsuario(@PathVariable Long indice, @RequestBody @Valid UsuarioRequestDTO usuarioModificadoDTO) {
+    public ResponseEntity<?> updateUsuario(@PathVariable Long indice, @RequestBody UsuarioRequestDTO usuarioModificadoDTO) {
 
-        Usuario usuarioModificado = new Usuario(usuarioModificadoDTO.nome(), usuarioModificadoDTO.email());
+        Usuario usuarioModificado = usuarioMapper.toEntity(usuarioModificadoDTO);
 
         Usuario usuario = usuarioService.updateUsuario(indice, usuarioModificado);
 
