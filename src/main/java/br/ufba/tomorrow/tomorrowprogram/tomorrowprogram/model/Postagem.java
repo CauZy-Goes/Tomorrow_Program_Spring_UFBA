@@ -1,8 +1,11 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class Postagem {
 
     @Id
@@ -11,6 +14,7 @@ public class Postagem {
 
     String texto;
 
+    @JsonIgnore
     @ManyToOne()
     Usuario usuario;
 
