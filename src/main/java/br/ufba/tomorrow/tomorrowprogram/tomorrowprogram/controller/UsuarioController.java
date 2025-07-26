@@ -1,7 +1,7 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.controller;
 
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.exception.NotFoundException;
-import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model.Usuario;
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model.Usuario;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -43,15 +43,11 @@ public class UsuarioController {
     }
 
     @GetMapping("/{indice}")
-    public ResponseEntity<?> getUsuario(@PathVariable @NotNull int indice) {
+    public ResponseEntity<Usuario> getUsuario(@PathVariable @NotNull long indice) {
 
-        Optional<Usuario> usuario = usuarioService.findById(indice);
+        Usuario usuario = usuarioService.findById(indice);
 
-        if(usuario == null)
-            throw new NotFoundException("Id não encontrado");
-//            return ResponseEntity.status(404).body("Usuário Não encontrado");
-
-        return ResponseEntity.of(usuario);
+        return ResponseEntity.ok(usuario);
     }
 
     @PostMapping
@@ -78,15 +74,9 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{indice}")
-    public ResponseEntity removeUsuario(@PathVariable @NotNull int indice) {
+    public ResponseEntity removeUsuario(@PathVariable @NotNull long indice) {
 
-        if(!usuarioService.removeById(indice)){
-            throw new NotFoundException("Id não encontrado");
-
-//            return ResponseEntity.status(404).body("Usuário Não encontrado");
-        }
-
+        usuarioService.removeById(indice);
         return ResponseEntity.status(204).build();
-
     }
 }

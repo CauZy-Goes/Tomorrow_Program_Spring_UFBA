@@ -1,7 +1,8 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service;
 
-import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model.Usuario;
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model.Usuario;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.repository.UsuarioRepository;
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +20,12 @@ public class UsuarioService {
             new Usuario("brian", "brian@gmail.com")
     ));
 
-    public Optional<Usuario> findById(Integer id){
-        if(!existeUsuario(id))
-            return null;
-
-        return Optional.ofNullable(usuarios.get(id));
+    public Usuario findById(Long id){
+        return usuarioRepository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 
-    public Boolean removeById(Integer id){
-        if(!existeUsuario(id))
-            return false;
-        int teste = id;
-
-        usuarios.remove(teste);
-
-        return  true;
+    public void removeById(Long id){
+        usuarioRepository.delete(findById(id));
     }
 
     public Usuario updateUsuario(Integer id, Usuario usuarioModificado){

@@ -1,4 +1,4 @@
-package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model;
+package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

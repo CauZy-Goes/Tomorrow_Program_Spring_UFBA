@@ -1,6 +1,6 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.controller.util;
 
-import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model.Erro;
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model.Erro;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.exception.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

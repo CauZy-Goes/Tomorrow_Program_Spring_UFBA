@@ -1,4 +1,4 @@
-package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model;
+package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -21,7 +21,7 @@ public class Usuario {
     @NotNull
     private String nome;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @NotNull
     @Email
     private String email;
