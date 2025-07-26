@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -48,12 +50,16 @@ public class UsuarioService {
         return usuario;
     }
 
+//    🧠 Por que usar Collections.unmodifiableList()?
+//    Esse padrão é usado para proteger a lista original contra modificações acidentais ou mal-intencionadas por parte de quem usa a API.
+//    Por exemplo, se você retornasse diretamente return usuarios, alguém poderia fazer :
+//    usuarioService.findAll().clear(); // Isso apagaria todos os usuários!
+//    Mas ao usar unmodifiableList(), isso geraria uma exceção UnsupportedOperationException, impedindo alterações externas.
     public List<Usuario> findAll(){
-        return usuarios;
+        return Collections.unmodifiableList(usuarios);
     }
 
     public boolean saveUsuario(Usuario usuario){
-
         usuarios.add(usuario);
         return true;
     }

@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
-    @Autowired
-    private  UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     // O Spring Boot utiliza a biblioteca Jackson para serializar automaticamente os objetos Java em JSON.
 // Neste caso, ao retornar uma lista de objetos Usuario, o Jackson converte cada instância da classe Usuario
