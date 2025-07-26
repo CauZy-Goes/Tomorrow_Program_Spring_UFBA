@@ -2,3 +2,5 @@ git config --global user.name "Cauã Goes"
 git config --global user.email "cauafariasdev@gmail.com"
 
 git config --global --list
+
+git config --global credential.helper store

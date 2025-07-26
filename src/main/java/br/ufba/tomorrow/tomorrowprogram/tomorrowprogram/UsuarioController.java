@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -42,12 +43,12 @@ public class UsuarioController {
     @GetMapping("/{indice}")
     public ResponseEntity<?> getUsuario(@PathVariable int indice) {
 
-        Usuario usuario = usuarioService.findById(indice);
+        Optional<Usuario> usuario = usuarioService.findById(indice);
 
         if(usuario == null)
             return ResponseEntity.status(404).body("Usuário Não encontrado");
 
-        return ResponseEntity.ok().body(usuario);
+        return ResponseEntity.of(usuario);
     }
 
     @PostMapping
