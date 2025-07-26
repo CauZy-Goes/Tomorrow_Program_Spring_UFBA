@@ -1,12 +1,15 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,5 +81,21 @@ public class UsuarioController {
 
         return ResponseEntity.status(204).build();
 
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Erro> trataErroDeTipoDeArgumento(MethodArgumentTypeMismatchException e){
+
+        Erro erro = new Erro("Tipo Inválido", 400, e.getMessage());
+
+        return ResponseEntity.badRequest().body(erro);
+    }
+
+    @Data
+    @AllArgsConstructor
+    public class Erro{
+        String mensagemDeErro;
+        Integer status;
+        String mensagemOriginal;
     }
 }
