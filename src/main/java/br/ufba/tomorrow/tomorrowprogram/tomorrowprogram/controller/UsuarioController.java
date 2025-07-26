@@ -1,5 +1,6 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.controller;
 
+import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model.dto.UsuarioRequestDTO;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.exception.NotFoundException;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.model.Usuario;
 import br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.service.UsuarioService;
@@ -52,17 +53,23 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> createUsuario(@RequestBody @Valid Usuario usuario) {
+    public ResponseEntity<?> createUsuario(@RequestBody @Valid UsuarioRequestDTO usuarioDTO) {
 //       if(!usuarioService.saveUsuario(usuario)){
 ////           throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Campos estão vazios",);
 //           return ResponseEntity.status(400).body("Não foi possivel criar");
 //       }
-       usuarioService.saveUsuario(usuario);
+
+        Usuario usuario = new Usuario(usuarioDTO.nome(), usuarioDTO.email());
+
+
+        usuarioService.saveUsuario(usuario);
        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{indice}")
-    public ResponseEntity<?> updateUsuario(@PathVariable Long indice, @RequestBody Usuario usuarioModificado) {
+    public ResponseEntity<?> updateUsuario(@PathVariable Long indice, @RequestBody @Valid UsuarioRequestDTO usuarioModificadoDTO) {
+
+        Usuario usuarioModificado = new Usuario(usuarioModificadoDTO.nome(), usuarioModificadoDTO.email());
 
         Usuario usuario = usuarioService.updateUsuario(indice, usuarioModificado);
 
