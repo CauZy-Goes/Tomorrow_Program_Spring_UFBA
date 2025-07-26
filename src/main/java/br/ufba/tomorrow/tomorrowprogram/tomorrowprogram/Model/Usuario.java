@@ -1,11 +1,29 @@
 package br.ufba.tomorrow.tomorrowprogram.tomorrowprogram.Model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor              // Necessário para o JPA
+@AllArgsConstructor            // Cria construtor com todos os campos, incluindo o id
+@Entity
 public class Usuario {
-    private  String nome;
-    private  String email;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "nome")
+    private String nome;
+
+    @Column(name = "email")
+    private String email;
+
+    // ✅ Construtor personalizado sem o id
+    public Usuario(String nome, String email) {
+        this.nome = nome;
+        this.email = email;
+    }
 }
